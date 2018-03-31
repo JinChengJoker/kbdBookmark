@@ -9,12 +9,7 @@ createKeyboard()
 // 3、监听按键打开对应网页
 document.onkeypress = function(kbd) {
     var key = kbd.key
-    var url = urls[key]
-    if(url) {
-        window.open('http://' + url, '_blank')
-    } else {
-        alert('未定义的书签')
-    }
+    openUrl(key)
 }
 
 // 工具函数
@@ -47,7 +42,7 @@ function createKeyboard() {
         rows.appendChild(row)
         for(var k = 0; k < keys[i].length; k++) {
             var letter = keys[i][k]
-            var kbd = tag('kbd')
+            var kbd = createOneKey(letter)
             var span = tag('span', {
                 textContent: letter
             })
@@ -69,13 +64,23 @@ function tag(tagName, attributes) {
     return tag
 }
 
-function createEditButton(letter) {
+function createOneKey(letter) {
+    var kbd = tag('kbd', {
+        id: letter
+    })
+    kbd.onclick = function(e) {
+        var key = e.target.id
+        openUrl(key)
+    }
+    return kbd
+}
+
+function createEditButton() {
     var btn = tag('button', {
-        id: letter,
         textContent: '编辑'
     })
     btn.onclick = function(e) {
-        var key = e.target.id
+        var key = e.target.parentNode.id
         var newUrl = prompt('请输入新的网址：')
         if(newUrl) {
             var img = e.target.nextSibling
@@ -83,6 +88,7 @@ function createEditButton(letter) {
             urls[key] = newUrl
             localStorage.setItem('urls', JSON.stringify(urls))
         }
+        e.stopPropagation()
     }
     return btn
 }
@@ -101,5 +107,14 @@ function setImgSrc(img, url) {
     img.src = '//' + url + '/favicon.ico'
     img.onerror = function(e) {
         e.target.src = './images/ico_heart.png'
+    }
+}
+
+function openUrl(key) {
+    var url = urls[key]
+    if(url) {
+        window.open('http://' + url, '_blank')
+    } else {
+        return alert('未定义的书签')
     }
 }
