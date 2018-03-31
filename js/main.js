@@ -39,7 +39,7 @@ for(var i = 0; i < keys.length; i++) {
                 var img = e.target.nextSibling
                 img.src = '//' + newUrl + '/favicon.ico'
                 img.onerror = function(e) {
-                    e.target.src = '../images/ico_heart.png'
+                    e.target.src = './images/ico_heart.png'
                 }
                 urls[key] = newUrl
                 localStorage.setItem('urls', JSON.stringify(urls))
@@ -49,10 +49,10 @@ for(var i = 0; i < keys.length; i++) {
         if(urls[letter]) {
             img.src = '//' + urls[letter] + '/favicon.ico'
             img.onerror = function(e) {
-                e.target.src = '../images/ico_heart.png'
+                e.target.src = './images/ico_heart.png'
             }
         } else {
-            img.src = '../images/ico_point.png'
+            img.src = './images/ico_point.png'
         }
         kbd.appendChild(img)
     }
